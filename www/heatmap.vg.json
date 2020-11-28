@@ -79,11 +79,10 @@
 
   "data": [
     {
-      "name": "temperature",
-      "url": "data/seattle-weather-hourly-normals.csv",
-      "format": {"type": "csv", "parse": {"temperature": "number", "date": "date"}},
+      "name": "latencies",
+      "url": "data/latencies.csv",
+      "format": {"type": "csv", "parse": {"latencycount": "number", "date": "date", "latency": "number"}},
       "transform": [
-        {"type": "formula", "as": "hour", "expr": "hours(datum.date)"},
         { "type": "formula", "as": "day",
           "expr": "datetime(year(datum.date), month(datum.date), date(datum.date))"}
       ]
@@ -94,15 +93,14 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "temperature", "field": "day"},
+      "domain": {"data": "latencies", "field": "day"},
       "range": "width"
     },
     {
       "name": "y",
       "type": "band",
       "domain": [
-        6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-        0, 1, 2, 3, 4, 5
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
       ],
       "range": "height"
     },
@@ -110,7 +108,7 @@
       "name": "color",
       "type": "linear",
       "range": {"scheme": {"signal": "palette"}},
-      "domain": {"data": "temperature", "field": "temperature"},
+      "domain": {"data": "latencies", "field": "latencycount"},
       "reverse": {"signal": "reverse"},
       "zero": false, "nice": true
     }
@@ -119,14 +117,7 @@
   "axes": [
     {"orient": "bottom", "scale": "x", "domain": false, "title": "Month", "format": "%b"},
     {
-      "orient": "left", "scale": "y", "domain": false, "title": "Hour",
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {"signal": "datum.value === 0 ? 'Midnight' : datum.value === 12 ? 'Noon' : datum.value < 12 ? datum.value + ':00 am' : (datum.value - 12) + ':00 pm'"}
-          }
-        }
-      }
+      "orient": "left", "scale": "y", "domain": false, "title": "Latency"
     }
   ],
 
@@ -134,7 +125,7 @@
     {
       "fill": "color",
       "type": "gradient",
-      "title": "Avg. Temp (°C)",
+      "title": "Count of requests",
       "titleFontSize": 12,
       "titlePadding": 4,
       "gradientLength": {"signal": "height - 16"}
@@ -144,17 +135,17 @@
   "marks": [
     {
       "type": "rect",
-      "from": {"data": "temperature"},
+      "from": {"data": "latencies"},
       "encode": {
         "enter": {
           "x": {"scale": "x", "field": "day"},
-          "y": {"scale": "y", "field": "hour"},
+          "y": {"scale": "y", "field": "latency"},
           "width": {"value": 5},
           "height": {"scale": "y", "band": 1},
-          "tooltip": {"signal": "timeFormat(datum.date, '%b %d %I:00 %p') + ': ' + datum.temperature + '°'"}
+          "tooltip": {"signal": "timeFormat(datum.date, '%b %d %I:00 %p') + ': ' + datum.latencycount + '°'"}
         },
         "update": {
-          "fill": {"scale": "color", "field": "temperature"}
+          "fill": {"scale": "color", "field": "latencycount"}
         }
       }
     }
