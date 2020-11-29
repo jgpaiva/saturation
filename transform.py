@@ -11,5 +11,6 @@ for i,line in enumerate(fileinput.input()):
         line.append("date,")
         print(",".join(map(str,line)))
     else:
+        i = i // 24
         line.append(datetime.fromtimestamp(start_date + i).isoformat())
         print(",".join(map(str,line)))
