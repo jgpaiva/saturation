@@ -1,0 +1,2 @@
+#!/bin/sh
+echo 'GET http://go-app:8080/hello' | vegeta attack --max-workers 10 --workers 10 -duration 10s | vegeta encode | jq -r '(.timestamp|sub(".[0-9]+Z$"; "Z")|fromdate|tostring) + "," + (.latency/1000000|tostring)' > /data/go-app.out

@@ -1,0 +1,22 @@
+version: "3.3"
+   
+services:
+    visualize:
+        build: visualize
+        volumes:
+            - ./data:/data
+            - ./img:/img
+        command: 
+            sh -c " cat /data/go-app.out | python visualize.py > /img/go-app.png"
+
+    load-test:
+        build: load-test
+        depends_on:
+            - "go-app"
+        volumes:
+            - ./data:/data
+        command: ./run
+
+    go-app:
+        build: go-app
+        command: ./main
