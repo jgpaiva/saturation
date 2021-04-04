@@ -20,3 +20,7 @@ services:
     go-app:
         build: go-app
         command: ./app
+
+    
+    ruby-app:
+        build: ruby-app
