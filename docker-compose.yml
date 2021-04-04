@@ -19,4 +19,4 @@ services:
 
     go-app:
         build: go-app
-        command: ./main
+        command: ./app

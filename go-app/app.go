@@ -1,4 +1,4 @@
-package app
+package main
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 func hello(w http.ResponseWriter, req *http.Request) {
-	time.Sleep(5000 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Fprintf(w, "hello\n")
 }
 
