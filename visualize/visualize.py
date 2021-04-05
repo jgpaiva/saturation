@@ -14,9 +14,9 @@ y = data['Latency']
 
 x -= min(x)
 
-x_bins = math.ceil(max(x) - min(x) + 1)
+x_bins = math.ceil(max(x) - min(x) +1)
 heatmap, xedges, yedges = np.histogram2d(x, y, bins=[x_bins, 50])
-extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+extent = [xedges[0]+1, xedges[-1]+2, yedges[0], yedges[-1]]
 
 # Normalize the heatmap so that sum of every row is 1
 sum_of_rows = heatmap.sum(axis=1)
@@ -34,6 +34,7 @@ fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10,10))
 axes[0].set_title("Latency heatmap")
 axes[0].imshow(normalized_heatmap.T, cmap='turbo', origin='lower', extent=extent, aspect='auto')
 axes[0].set_ylabel("Latency (s)")
+#axes[0].set_ylim(0,max(y)*1.05)
 
 axes[1].hist(x=x, bins=hist_bins)
 axes[1].set_title("Throughput")
